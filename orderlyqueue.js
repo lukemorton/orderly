@@ -8,13 +8,6 @@ Orderly.prototype.queue = function (queue) {
     return newQueue;
 };
 
-function OrderlyQueue(queue) {
-    this.queue = queue;
-    this.options = {
-        "complete" : function () {}
-    };
-}
-
 function countDefinedValues(arr) {
     var count = 0;
     for (var i in arr) {
@@ -23,22 +16,30 @@ function countDefinedValues(arr) {
     return count;
 }
 
+function OrderlyQueue(queue) {
+    this.queue = queue;
+    this.queueCount = countDefinedValues(queue);
+    this.processedQueue = [];
+    this.options = {
+        "complete" : function () {}
+    };
+    this.isProcessed = false;
+}
+
+OrderlyQueue.prototype.isProcessed = function () {
+    return countDefinedValues(this.processedQueue) === this.queueCount;
+};
+
 OrderlyQueue.prototype.process = function (process) {
     var queue = this.queue,
-        orderIds = 0,
-        finalArray = [],
-        queueCount = countDefinedValues(queue),
-        onComplete = this.options.complete;
+        orderIds = 0;
     
     for (var i in queue) {
         (function () {
             var thisId = ++orderIds + 0;
             process(queue[i], function (item) {
-                finalArray[thisId] = item;
-				if (countDefinedValues(finalArray) === queueCount) {
-					//console.log(thisId + ': completed');
-					onComplete(finalArray);
-				}
+                this.processedQueue[thisId] = item;
+                this.complete();
             });
         }());
     }
@@ -47,6 +48,13 @@ OrderlyQueue.prototype.process = function (process) {
 };
 
 OrderlyQueue.prototype.complete = function (callback) {
-    this.options.complete = callback;
+    if (callback) {
+        this.options.complete = callback;
+    }
+    
+    if (this.isProcessed()) {
+        this.options.complete(this.processedQueue);
+    }
+    
     return this;
 };
