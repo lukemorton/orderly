@@ -17,11 +17,13 @@
         return count;
     }
 
-    function OrderlyQueue(queue) {
+    function OrderlyQueue(queue, options) {
+        options = options || {};
         this.queue = queue;
         this.queueCount = countDefinedValues(queue);
+        this.processedQueue = [];
         this.options = {
-            "complete" : function () {}
+            "complete" : options.complete || function () {}
         };
     }
 
@@ -31,19 +33,15 @@
 
     OrderlyQueue.prototype.process = function (process) {
         var q = this,
-            queue = this.queue,
-            orderIds = 0;
+            queue = this.queue;
         
         for (var i in queue) {
-            (function () {
-                var thisId = orderIds + 0;
-                process(queue[i], function (item) {
-                    if ( ! q.processedQueue) q.processedQueue = [];
-                    q.processedQueue[thisId] = item;
+            (function (key) {
+                process(queue[key], function (item) {
+                    q.processedQueue[key] = item;
                     q.complete();
                 });
-                ++orderIds;
-            }());
+            }(i));
         }
         
         return this;
