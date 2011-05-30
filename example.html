@@ -11,19 +11,17 @@
             $(function () {
                 var orderly = new Orderly();
                 
-                // Use an orderly queue to asyncronously
-                // process an array of anything
+                // Use an orderly queue to asyncronously process an
+                // array of anything
                 orderly.queue(['Hello', 'Goodbye'])
-                    // Use the process method to define
-                    // what you want to do to each array
-                    // item, then hand back the finished
-                    // value using handle()
+                    // Use the process method to define what you want
+                    // to do to each array item, then hand back the 
+                    // finished value using handle()
                     .process(function (str, handle) {
                         handle(str + " Bob!");
                     })
-                    // Define a complete function which
-                    // receives the final array in it's
-                    // original order
+                    // Define a complete function which receives the
+                    // final array in it's original order
                     .complete(function (finalArr) {
                         console.log('OnComplete:', finalArr);
                     });
@@ -32,8 +30,8 @@
                 orderly.queue(['fixtures/a.php', 'fixtures/b.php'])
                     // Use jQuery's GET AJAX method
                     .process($.get)
-                    // Even though fixtures/a.php has a timeout
-                    // we still receive the html in the order [a, b]
+                    // Even though fixtures/a.php has a timeout we
+                    // still receive the html in the order [a, b]
                     .complete(function (data) {
                         data = data.join("\n");
                         $('body').append(data);
