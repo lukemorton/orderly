@@ -27,10 +27,9 @@
 						});
 					})
 					.complete(function (data) {
-						$.each(data, function (i, html) {
-							$('body').append(html);
-						});
-						console.log('OnComplete:', $(data));
+						data = data.join("\n");
+						$('body').append(data);
+						console.log('OnComplete:', data);
 					});
 			});
 		</script>
