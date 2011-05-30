@@ -1,31 +1,31 @@
 <!doctype html>
 <html>
-	<head>
-		<title>An example</title>
-		<meta charset="utf-8" />
-	</head>
-	<body>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-		<script src="orderlyqueue.js"></script>
-		<script>
-			$(function () {
-				var orderly = new Orderly();
-				var q = orderly.queue(['Hello', 'Goodbye'])
-					.process(function (str, handle) {
-						handle(str + " Bob!");
-					})
-					.complete(function (finalArr) {
-						console.log('OnComplete:', finalArr);
-					});
+    <head>
+        <title>An example</title>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+        <script src="orderlyqueue.js"></script>
+        <script>
+            $(function () {
+                var orderly = new Orderly();
+                var q = orderly.queue(['Hello', 'Goodbye'])
+                    .process(function (str, handle) {
+                        handle(str + " Bob!");
+                    })
+                    .complete(function (finalArr) {
+                        console.log('OnComplete:', finalArr);
+                    });
 
-				var q2 = orderly.queue(['fixtures/a.php', 'fixtures/b.php'])
-					.process($.get)
-					.complete(function (data) {
-						data = data.join("\n");
-						$('body').append(data);
-						console.log('OnComplete:', data);
-					});
-			});
-		</script>
-	</body>
+                var q2 = orderly.queue(['fixtures/a.php', 'fixtures/b.php'])
+                    .process($.get)
+                    .complete(function (data) {
+                        data = data.join("\n");
+                        $('body').append(data);
+                        console.log('OnComplete:', data);
+                    });
+            });
+        </script>
+    </body>
 </html>
