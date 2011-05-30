@@ -1,5 +1,5 @@
 var orderly = new Orderly;
-var q = orderly.newQueue(['hello', 'goodbye'])
+var q = orderly.queue(['hello', 'goodbye'])
     .complete(function (finalArr) {
         console.log('complete');
     })
@@ -8,10 +8,6 @@ var q = orderly.newQueue(['hello', 'goodbye'])
         handle(str);
     });
 
-var q2 = orderly.newQueue(['a.html', 'b.html'])
-    .complete(function (finalArr) {
-        console.log(finalArr);
-    })
-    .process(function (url, handle) {
-        $.get(url, handle);
-    });
+var q2 = orderly.queue(['a.html', 'b.html'])
+    .complete(console.log)
+    .process($.ge);

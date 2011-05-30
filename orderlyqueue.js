@@ -2,7 +2,7 @@ function Orderly() {
     this.queues = [];
 }
 
-Orderly.prototype.newQueue = function (queue) {
+Orderly.prototype.queue = function (queue) {
     var newQueue = new OrderlyQueue(queue);
     this.queues.push(newQueue);
     return newQueue;
