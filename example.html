@@ -20,12 +20,7 @@
 					});
 
 				var q2 = orderly.queue(['fixtures/a.php', 'fixtures/b.php'])
-					.process(function (url, handle) {
-						$.get(url, function (html) {
-							console.log('OnReceive:', html);
-							handle(html);
-						});
-					})
+					.process($.get)
 					.complete(function (data) {
 						data = data.join("\n");
 						$('body').append(data);
