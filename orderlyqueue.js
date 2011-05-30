@@ -1,4 +1,4 @@
-(function (exports) {
+!function (context) {
     function Orderly() {
         this.queues = [];
     }
@@ -56,14 +56,20 @@
     OrderlyQueue.prototype.complete = function (callback) {
         if (callback) {
             this.callbacks.complete = callback;
+        } else {
+            callback = this.callbacks.complete;
         }
         
-        if (this.callbacks.complete && this.isProcessed()) {
-            this.callbacks.complete(this.processedQueue);
+        if (callback && this.isProcessed()) {
+            callback(this.processedQueue);
         }
         
         return this;
     };
     
-    exports.Orderly = Orderly;
-}(this));
+    if ('exports' in context) {
+        context.exports.Orderly = Orderly;
+    } else {
+        context.Orderly = Orderly;
+    }
+}(this);
