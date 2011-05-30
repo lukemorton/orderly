@@ -20,8 +20,8 @@
     function OrderlyQueue(queue, callbacks) {
         callbacks = callbacks || {};
         this.callbacks = {
-            "process" : callbacks.process || function () {},
-            "complete" : callbacks.complete || function () {}
+            "process" : callbacks.process || null,
+            "complete" : callbacks.complete || null
         };
         this.queue = queue;
         this.queueCount = countDefinedValues(queue);
@@ -33,15 +33,17 @@
     };
 
     OrderlyQueue.prototype.process = function (process) {
-        var queue = this.queue;
-            
-        if (process) {
-            this.callbacks.process = process;
+        var queue = this.queue,
+            i;
+        
+        process = process || this.callbacks.process; 
+        if ( ! process) {
+            return this;
         }
         
-        for (var i in queue) {
+        for (i in queue) {
             (function (q, key, itemBefore) {
-                q.callbacks.process(itemBefore, function (itemAfter) {
+                process(itemBefore, function (itemAfter) {
                     q.processedQueue[key] = itemAfter;
                     q.complete();
                 });
@@ -56,7 +58,7 @@
             this.callbacks.complete = callback;
         }
         
-        if (this.isProcessed()) {
+        if (this.callbacks.complete && this.isProcessed()) {
             this.callbacks.complete(this.processedQueue);
         }
         
