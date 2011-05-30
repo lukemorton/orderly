@@ -1,6 +1,6 @@
 var orderly = new Orderly;
 var q = orderly.newQueue(['hello', 'goodbye'])
-    .onComplete(function (finalArr) {
+    .complete(function (finalArr) {
         console.log('complete');
     })
     .process(function (str, handle) {
@@ -9,7 +9,7 @@ var q = orderly.newQueue(['hello', 'goodbye'])
     });
 
 var q2 = orderly.newQueue(['a.html', 'b.html'])
-    .onComplete(function (finalArr) {
+    .complete(function (finalArr) {
         console.log(finalArr);
     })
     .process(function (url, handle) {
