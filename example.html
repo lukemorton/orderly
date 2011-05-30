@@ -10,10 +10,9 @@
 		<script>
 			$(function () {
 				var orderly = new Orderly();
-				var q = orderly.queue(['hello', 'goodbye'])
+				var q = orderly.queue(['Hello', 'Goodbye'])
 					.process(function (str, handle) {
-						console.log('OnReceive:', str);
-						handle(str);
+						handle(str + " Bob!");
 					})
 					.complete(function (finalArr) {
 						console.log('OnComplete:', finalArr);
