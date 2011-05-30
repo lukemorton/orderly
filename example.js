@@ -9,5 +9,5 @@ var q = orderly.queue(['hello', 'goodbye'])
     });
 
 var q2 = orderly.queue(['a.html', 'b.html'])
-    .complete(console.log)
-    .process($.ge);
+    .process($.get)
+    .complete(console.log);
