@@ -15,7 +15,7 @@ function OrderlyQueue(queue) {
     };
 }
 
-Orderly.prototype.onComplete = function (callback) {
+OrderlyQueue.prototype.onComplete = function (callback) {
     this.options.onComplete = callback;
     return this;
 };
@@ -30,7 +30,7 @@ function countDefinedValues(arr) {
     return count;
 }
 
-Orderly.prototype.process = function (process) {
+OrderlyQueue.prototype.process = function (process) {
     var queue = this.queue,
         orderIds = 0,
         finalArray = [],
