@@ -9,6 +9,8 @@
         <script src="orderlyqueue.js"></script>
         <script>
             $(function () {
+                // Get an orderly instance, this just contains the
+                // OrderlyQueue's
                 var orderly = new Orderly();
                 
                 // Use an orderly queue to asyncronously process an
@@ -37,6 +39,19 @@
                         $('body').append(data);
                         console.log('OnComplete:', data);
                     });
+                
+                // A second argument can be passed defining the
+                // callbacks process() and complete()
+                orderly.queue(['Test a', 'Test b'], {
+                    "process" : function (str, handle) {
+                        handle(str.toUpperCase());
+                    },
+                    "complete" : function (arr) {
+                        console.log(arr);
+                    }
+                
+                // Another call to process initiates the processing
+                }).process();
             });
         </script>
     </body>

@@ -3,8 +3,8 @@
         this.queues = [];
     }
 
-    Orderly.prototype.queue = function (queue) {
-        var newQueue = new OrderlyQueue(queue);
+    Orderly.prototype.queue = function (queue, callbacks) {
+        var newQueue = new OrderlyQueue(queue, callbacks);
         this.queues.push(newQueue);
         return newQueue;
     };
@@ -17,14 +17,15 @@
         return count;
     }
 
-    function OrderlyQueue(queue, options) {
-        options = options || {};
+    function OrderlyQueue(queue, callbacks) {
+        callbacks = callbacks || {};
+        this.callbacks = {
+            "process" : callbacks.process || function () {},
+            "complete" : callbacks.complete || function () {}
+        };
         this.queue = queue;
         this.queueCount = countDefinedValues(queue);
         this.processedQueue = [];
-        this.options = {
-            "complete" : options.complete || function () {}
-        };
     }
 
     OrderlyQueue.prototype.isProcessed = function () {
@@ -32,16 +33,19 @@
     };
 
     OrderlyQueue.prototype.process = function (process) {
-        var q = this,
-            queue = this.queue;
+        var queue = this.queue;
+            
+        if (process) {
+            this.callbacks.process = process;
+        }
         
         for (var i in queue) {
-            (function (key) {
-                process(queue[key], function (item) {
-                    q.processedQueue[key] = item;
+            (function (q, key, itemBefore) {
+                q.callbacks.process(itemBefore, function (itemAfter) {
+                    q.processedQueue[key] = itemAfter;
                     q.complete();
                 });
-            }(i));
+            }(this, i, queue[i]));
         }
         
         return this;
@@ -49,11 +53,11 @@
 
     OrderlyQueue.prototype.complete = function (callback) {
         if (callback) {
-            this.options.complete = callback;
+            this.callbacks.complete = callback;
         }
         
         if (this.isProcessed()) {
-            this.options.complete(this.processedQueue);
+            this.callbacks.complete(this.processedQueue);
         }
         
         return this;
