@@ -4,15 +4,19 @@ var fs = require('fs'),
     orderly = new Orderly();
 
 orderly.queue(['/home', '/etc'])
-    .process(function (path, handle, error) {
-        fs.readdir(path, function (err, files) {
-            if (err) error(err);
-            handle(files.slice(0, 5));
-        });
-    })
+    // Error must be defined before process
     .error(function (err) {
         console.log(err);
     })
-    .complete(function (files) {
+    .process(function (path, handle, error) {
+        fs.readdir(path, function (err, files) {
+            if (err) {
+                error(err);
+                return;
+            }
+            handle(files.slice(0, 5));
+        });
+    })
+    .complete(function (files, err) {
         console.log(files);
     });
