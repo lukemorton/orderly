@@ -1,8 +1,12 @@
 !function (context) {
+    // Orderly contains many queues
     function Orderly() {
         this.queues = [];
     }
 
+    // To create a new OrderlyQueue pass an array to queue
+    // and optionally an object with some callbacks
+    // See OrderlyQueue for more information on the callbacks
     Orderly.prototype.queue = function (queue, callbacks) {
         var newQueue = new OrderlyQueue(queue, callbacks);
         this.queues.push(newQueue);
@@ -20,7 +24,8 @@
     function OrderlyQueue(queue, callbacks) {
         callbacks = callbacks || {};
         this.callbacks = {
-            "process" : callbacks.process || null,
+            "process"  : callbacks.process || null,
+            "error"    : callbacks.error || function () {},
             "complete" : callbacks.complete || null
         };
         this.queue = queue;
@@ -34,22 +39,27 @@
 
     OrderlyQueue.prototype.process = function (process) {
         var queue = this.queue,
-            i;
+            i,
+            error = this.callbacks.error;
         
-        process = process || this.callbacks.process; 
+        process = process || this.callbacks.process;
         if ( ! process) {
             return this;
         }
         
-        for (i in queue) {
-            (function (q, key, itemBefore) {
+        for (i in queue)
+            !function (q, key, itemBefore) {
                 process(itemBefore, function (itemAfter) {
                     q.processedQueue[key] = itemAfter;
                     q.complete();
-                });
-            }(this, i, queue[i]));
-        }
+                }, error);
+            }(this, i, queue[i]);
         
+        return this;
+    };
+    
+    OrderlyQueue.prototype.error = function (callback) {
+        this.callbacks.error = callback;
         return this;
     };
 
