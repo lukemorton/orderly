@@ -1,3 +1,7 @@
+// Orderly array processing for your asyncronous needs in
+// browser and outside such realms.
+// Copyright 2011, Luke Morton
+// Licensed under MIT
 !function (context) {
     // Orderly contains many queues
     function Orderly() {
