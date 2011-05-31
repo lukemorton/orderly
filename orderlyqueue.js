@@ -12,7 +12,7 @@
     function countDefinedValues(arr) {
         var count = 0;
         for (var i in arr) {
-            if (arr[i] !== undefined) count++;
+            if (typeof arr[i] !== 'undefined') count++;
         }
         return count;
     }
@@ -67,9 +67,14 @@
         return this;
     };
     
-    if ('exports' in context) {
-        context.exports.Orderly = Orderly;
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports = Orderly;
     } else {
+        var old = context.Orderly;
+        Orderly.noConflict = function () {
+            context.Orderly = old;
+            return this;
+        };
         context.Orderly = Orderly;
     }
 }(this);
