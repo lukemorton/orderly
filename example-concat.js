@@ -1,8 +1,13 @@
 #!/usr/bin/env node
 var fs = require('fs'),
+    Orderly = require('./orderlyqueue'),
     orderly = new Orderly();
 
-orderly.queue(['./example/js', '.example/css'])
+orderly.queue(['./example/js', './example/css'])
+    .error(function (err) {
+        console.log('Error');
+        console.log(err);
+    })
     .process(function (path, success, error) {
         fs.readdir(path, function (err, files) {
             if (err) {
@@ -25,5 +30,6 @@ orderly.queue(['./example/js', '.example/css'])
         });
     })*/
     .complete(function (files) {
+        console.log('Success');
         console.log(files.join("\n"));
     });
