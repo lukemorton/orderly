@@ -3,7 +3,7 @@ var fs = require('fs'),
     Orderly = require('./orderlyqueue'),
     orderly = new Orderly();
 
-orderly.queue(['/home', '/etc'])
+orderly.queue(['.', './example'])
     // Error must be defined before process
     .error(function (err) {
         console.log(err);
