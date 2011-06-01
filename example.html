@@ -6,12 +6,17 @@
     </head>
     <body>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-        <script src="orderlyqueue.js"></script>
+        <script src="orderly.js"></script>
         <script>
             $(function () {
-                // Get an orderly instance, this just contains the
+				// Get an orderly instance, this just contains the
                 // OrderlyQueue's
-                var orderly = new Orderly();
+                var orderly = new Orderly(),
+					logg = function (type) {
+						return function (varr) {
+							console.log(type + ':', varr);
+						};
+					};
                 
                 // Use an orderly queue to asyncronously process an
                 // array of anything
@@ -24,34 +29,33 @@
                     })
                     // Define a complete function which receives the
                     // final array in it's original order
-                    .complete(function (finalArr) {
-                        console.log('OnComplete:', finalArr);
-                    });
+                    .complete(logg('complete'))
+					.run();
 
                 // Let's do some AJAX
                 orderly.queue(['example/a.php', 'example/b.php'])
                     // Use jQuery's GET AJAX method
-                    .process($.get)
+                    .process(function (url, success) {
+						$.get(url, success);
+					})
+                    .process(function (html, success) {
+						success($(html).appendTo('body'));
+					})
                     // Even though fixtures/a.php has a timeout we
                     // still receive the html in the order [a, b]
-                    .complete(function (data) {
-                        data = data.join("\n");
-                        $('body').append(data);
-                        console.log('OnComplete:', data);
-                    });
+                    .complete(logg('complete'))
+					.run();
                 
                 // A second argument can be passed defining the
-                // callbacks process() and complete()
+                // callbacks error() and complete()
                 orderly.queue(['Test a', 'Test b'], {
-                    "process" : function (str, handle) {
-                        handle(str.toUpperCase());
-                    },
-                    "complete" : function (arr) {
-                        console.log(arr);
-                    }
-                
-                // Another call to process initiates the processing
-                }).process();
+						"error"    : logg('error'),
+						"complete" : logg('complete')
+					})
+					.process(function (str, handle) {
+						handle(str.toUpperCase());
+					})
+					.run();
             });
         </script>
     </body>
