@@ -1,11 +1,16 @@
-var orderly = new Orderly();
+var fs = require('fs'),
+    orderly = new Orderly();
 
-orderly.queue(['example/js/*.js', 'example/css/*.css'])
-    .process(function (item, success) {
-        findAllFiles(item, function (files) {
+orderly.queue(['./example/js', '.example/css'])
+    .process(function (path, success, error) {
+        fs.readdir(path, function (err, files) {
+            if (err) {
+                error(err);
+                return;
+            }
             success(files);
         });
-    })
+    })/*
     .process(function (files, success) {
         var fileType = getFileType(files);
         concatFiles(files, function (concatStr) {
@@ -17,7 +22,7 @@ orderly.queue(['example/js/*.js', 'example/css/*.css'])
         strToFile(newFilename, concat[1], function () {
             success(newFilename);
         });
-    })
+    })*/
     .complete(function (files) {
         console.log(files.join("\n"));
     });
