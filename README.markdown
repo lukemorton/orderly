@@ -21,7 +21,7 @@ orderly.array(['/etc', '/home'])
             success(files.slice(0, 5));
         });
     })
-    .complete(function (files, err) {
+    .complete(function (files) {
         console.log(files);
     })
     .error(function (err) {
@@ -50,7 +50,7 @@ orderly.array(['php/a.php', 'php/b.php'])
 		$.get(url, success);
 	})
 	.map(function (html, success) {
-		success($(html).appendTo('body'));
+		success(html);
 	})
 	// Even though fixtures/a.php has a timeout we
 	// still receive the html in the order [a, b]
@@ -64,7 +64,7 @@ Using Orderly is just as easy in the browser.
 
 # Author
 
-Luke Morton
+Luke Morto
 
 # License
 
