@@ -3,12 +3,8 @@ var fs = require('fs'),
     Orderly = require('../orderly'),
     orderly = new Orderly();
 
-orderly.queue(['/etc', '/home'])
-    // Error must be defined before process
-    .error(function (err) {
-        console.log(err);
-    })
-    .process(function (path, handle, error) {
+orderly.new(['/etc', '/home'])
+    .map(function (path, handle, error) {
         fs.readdir(path, function (err, files) {
             if (err) {
                 error(err);
@@ -19,5 +15,8 @@ orderly.queue(['/etc', '/home'])
     })
     .complete(function (files, err) {
         console.log(files);
+    })
+    .error(function (err) {
+        console.log(err);
     })
     .run();

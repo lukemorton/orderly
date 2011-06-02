@@ -20,11 +20,11 @@
                 
                 // Use an orderly queue to asyncronously process an
                 // array of anything
-                orderly.queue(['Hello', 'Goodbye'])
+                orderly.new(['Hello', 'Goodbye'])
                     // Use the process method to define what you want
                     // to do to each array item, then hand back the 
                     // finished value using handle()
-                    .process(function (str, handle) {
+                    .map(function (str, handle) {
                         handle(str + " Bob!");
                     })
                     // Define a complete function which receives the
@@ -33,12 +33,12 @@
                     .run();
 
                 // Let's do some AJAX
-                orderly.queue(['php/a.php', 'php/b.php'])
+                orderly.new(['php/a.php', 'php/b.php'])
                     // Use jQuery's GET AJAX method
-                    .process(function (url, success) {
+                    .map(function (url, success) {
                         $.get(url, success);
                     })
-                    .process(function (html, success) {
+                    .map(function (html, success) {
                         success($(html).appendTo('body'));
                     })
                     // Even though fixtures/a.php has a timeout we
@@ -48,11 +48,11 @@
                 
                 // A second argument can be passed defining the
                 // callbacks error() and complete()
-                orderly.queue(['Test a', 'Test b'], {
+                orderly.new(['Test a', 'Test b'], {
                         "error"    : logg('error'),
                         "complete" : logg('complete')
                     })
-                    .process(function (str, handle) {
+                    .map(function (str, handle) {
                         handle(str.toUpperCase());
                     })
                     .run();

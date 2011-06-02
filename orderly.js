@@ -11,7 +11,7 @@
     // To create a new OrderlyQueue pass an array to queue
     // and optionally an object with some callbacks
     // See OrderlyQueue for more information on the callbacks
-    Orderly.prototype.queue = function (queue, callbacks) {
+    Orderly.prototype.new = function (queue, callbacks) {
         var newQueue = new OrderlyQueue(queue, callbacks);
         this.queues.push(newQueue);
         return newQueue;
@@ -71,7 +71,7 @@
     //         errorCallback('Something didn\'t happen');
     //     }
     // }
-    OrderlyQueue.prototype.process = function (process) {
+    OrderlyQueue.prototype.map = function (process) {
         this.processes.push(process);
         return this;
     };
