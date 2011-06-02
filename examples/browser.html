@@ -20,7 +20,7 @@
                 
                 // Use an orderly queue to asyncronously process an
                 // array of anything
-                orderly.new(['Hello', 'Goodbye'])
+                orderly.array(['Hello', 'Goodbye'])
                     // Use the process method to define what you want
                     // to do to each array item, then hand back the 
                     // finished value using handle()
@@ -33,7 +33,7 @@
                     .run();
 
                 // Let's do some AJAX
-                orderly.new(['php/a.php', 'php/b.php'])
+                orderly.array(['php/a.php', 'php/b.php'])
                     // Use jQuery's GET AJAX method
                     .map(function (url, success) {
                         $.get(url, success);
@@ -48,7 +48,7 @@
                 
                 // A second argument can be passed defining the
                 // callbacks error() and complete()
-                orderly.new(['Test a', 'Test b'], {
+                orderly.array(['Test a', 'Test b'], {
                         "error"    : logg('error'),
                         "complete" : logg('complete')
                     })

@@ -8,11 +8,11 @@
         this.queues = [];
     }
 
-    // To create a new OrderlyQueue pass an array to queue
+    // To create a new OrderlyArray pass an array to queue
     // and optionally an object with some callbacks
-    // See OrderlyQueue for more information on the callbacks
-    Orderly.prototype.new = function (queue, callbacks) {
-        var newQueue = new OrderlyQueue(queue, callbacks);
+    // See OrderlyArray for more information on the callbacks
+    Orderly.prototype.array = function (queue, callbacks) {
+        var newQueue = new OrderlyArray(queue, callbacks);
         this.queues.push(newQueue);
         return newQueue;
     };
@@ -26,8 +26,8 @@
         return count;
     }
 
-    // OrderlyQueue manages a single array queue
-    function OrderlyQueue(queue, callbacks) {
+    // OrderlyArray manages a single array queue
+    function OrderlyArray(queue, callbacks) {
         callbacks = callbacks || {};
         
         this.callbacks = {
@@ -51,12 +51,12 @@
 
     // Have all the items in this.queue been processed into
     // this.processedQueue?
-    OrderlyQueue.prototype.isProcessed = function () {
+    OrderlyArray.prototype.isProcessed = function () {
         return countDefinedValues(this.processedQueue) === this.queueCount;
     };
     
     // Are there any more processes left?
-    OrderlyQueue.prototype.isComplete = function () {
+    OrderlyArray.prototype.isComplete = function () {
         return countDefinedValues(this.processes) === 0;
     };
 
@@ -71,13 +71,13 @@
     //         errorCallback('Something didn\'t happen');
     //     }
     // }
-    OrderlyQueue.prototype.map = function (process) {
+    OrderlyArray.prototype.map = function (process) {
         this.processes.push(process);
         return this;
     };
     
     // Run through all processes
-    OrderlyQueue.prototype.run = function() {
+    OrderlyArray.prototype.run = function() {
         var process = this.processes.shift(),
             queue = this.queue,
             i,
@@ -111,13 +111,13 @@
     };
     
     // Set the error callback
-    OrderlyQueue.prototype.error = function (callback) {
+    OrderlyArray.prototype.error = function (callback) {
         this.callbacks.error = callback;
         return this;
     };
 
     // Set the complete callback
-    OrderlyQueue.prototype.complete = function (callback) {
+    OrderlyArray.prototype.complete = function (callback) {
         this.callbacks.complete = callback;
         return this;
     };

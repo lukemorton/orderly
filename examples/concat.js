@@ -4,7 +4,7 @@ var fs = require('fs'),
     Orderly = require('../orderly'),
     orderly = new Orderly();
 
-orderly.new(['./js', './css'])
+orderly.array(['./js', './css'])
     .map(function (path, success, error) {
         fs.readdir(path, function (err, files) {
             if (err) return error(err);
@@ -16,7 +16,7 @@ orderly.new(['./js', './css'])
             path = path[0];
 
         // Ooo queues within queues!
-	orderly.new(files)
+	orderly.array(files)
             .map(function (file, success, error) {
                 console.log(path + file);
                 fs.readFile(path + file, function (err, data) { 

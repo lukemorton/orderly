@@ -3,17 +3,17 @@ var fs = require('fs'),
     Orderly = require('../orderly'),
     orderly = new Orderly();
 
-orderly.new(['/etc', '/home'])
-    .map(function (path, handle, error) {
+orderly.array(['/etc', '/home'])
+    .map(function (path, success, error) {
         fs.readdir(path, function (err, files) {
             if (err) {
                 error(err);
                 return;
             }
-            handle(files.slice(0, 5));
+            success(files.slice(0, 5));
         });
     })
-    .complete(function (files, err) {
+    .complete(function (files) {
         console.log(files);
     })
     .error(function (err) {
