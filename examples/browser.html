@@ -6,7 +6,7 @@
     </head>
     <body>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-        <script src="orderly.js"></script>
+        <script src="../orderly.js"></script>
         <script>
             $(function () {
                 // Get an orderly instance, this just contains the
@@ -33,7 +33,7 @@
                     .run();
 
                 // Let's do some AJAX
-                orderly.queue(['example/a.php', 'example/b.php'])
+                orderly.queue(['php/a.php', 'php/b.php'])
                     // Use jQuery's GET AJAX method
                     .process(function (url, success) {
                         $.get(url, success);

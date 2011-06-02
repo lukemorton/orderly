@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 var fs = require('fs'),
     p = require('path'),
-    Orderly = require('./orderly'),
+    Orderly = require('../orderly'),
     orderly = new Orderly();
 
-orderly.queue(['./example/js', './example/css'])
+orderly.queue(['./js', './css'])
     .error(function (err) {
         console.log('Error');
         console.log(err);

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 var fs = require('fs'),
-    Orderly = require('./orderly'),
+    Orderly = require('../orderly'),
     orderly = new Orderly();
 
 orderly.queue(['/etc', '/home'])
