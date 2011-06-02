@@ -40,6 +40,26 @@ mapping callbacks have be used.
 
 Calling .run() finally will start the mapping process.
 
+## browser
+
+```
+// Let's do some AJAX
+orderly.array(['php/a.php', 'php/b.php'])
+	// Use jQuery's GET AJAX method
+	.map(function (url, success) {
+		$.get(url, success);
+	})
+	.map(function (html, success) {
+		success($(html).appendTo('body'));
+	})
+	// Even though fixtures/a.php has a timeout we
+	// still receive the html in the order [a, b]
+	.complete(console.log('complete'))
+	.run();
+```
+
+Using Orderly is just as easy in the browser.
+
 # Author
 
 Luke Morton
