@@ -54,7 +54,9 @@ orderly.array(['php/a.php', 'php/b.php'])
 	})
 	// Even though fixtures/a.php has a timeout we
 	// still receive the html in the order [a, b]
-	.complete(console.log('complete'))
+	.complete(function (arr) {
+		console.log('complete', arr);
+	})
 	.run();
 ```
 
